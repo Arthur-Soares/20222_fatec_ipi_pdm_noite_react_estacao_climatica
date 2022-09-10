@@ -27,7 +27,7 @@ class App extends React.Component {
         const sul = latitude < 0
 
         if (data >= d1 && data < d2) {
-            return sul ? 'Inverno' : 'Verão'
+            return sul ? 'Inverno' : 'Verao'
 
         }
         if (data >= d2 && data < d3) {
@@ -38,6 +38,15 @@ class App extends React.Component {
         }
         return sul ? 'Outono' : 'Primavera'
     }
+
+    icones = {
+        "Primavera" : "fa-seeding", //fa = font awasome
+        "Verao" : "fa-umbrella-beach",
+        "Outono" : "fa-tree",
+        "Inverno" : "fa-snowman"
+    }
+
+
     render() {
         return (
             <div>
