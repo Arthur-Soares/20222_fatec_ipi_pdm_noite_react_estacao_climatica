@@ -9,7 +9,7 @@ class App extends React.Component {
         super(props)
         this.state = {
             latitude: null,
-            logitude: null,
+            longitude: null,
             estacao: null,
             data: null,
             icone: null
@@ -40,18 +40,78 @@ class App extends React.Component {
     }
 
     icones = {
-        "Primavera" : "fa-seeding", //fa = font awasome
-        "Verao" : "fa-umbrella-beach",
-        "Outono" : "fa-tree",
-        "Inverno" : "fa-snowman"
+        "Primavera": "fa-seeding", //fa = font awasome
+        "Verao": "fa-umbrella-beach",
+        "Outono": "fa-tree",
+        "Inverno": "fa-snowman"
+    }
+
+    obterLocalizacao() {
+        window.navigator.geolocation.getCurrentPosition(
+            (position) => {
+                let data = new Date()
+                let estacao = this.obterEstacao(data, position.coords.latitude)
+                let icone = this.icones[estacao]
+
+                this.setState(
+                    {
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude,
+                        data: data.toLocaleString(),
+                        estacao: estacao,
+                        icone: icone
+                    }
+                )
+
+
+            }
+        )
+
     }
 
 
     render() {
+
         return (
-            <div>
-                Meu App
+            <div className="container mt-2">
+                <div className="row justify-content-center">
+                    <div className="col-md-8">
+                        {/*.card>.card-body */}
+                        <div className="card">
+                            <div className="card-body">
+                                <div className="d-flex align-items-center border rounded mb-2" style={{ height: "6rem" }}>
+                                    <i className={`fas fa-5x ${this.state.icone}`}></i>
+                                    <p className="w-75 ms3 text-center fs-1">
+                                        {`${this.state.estacao}`}
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <div>
+                                        <p className="text-center">
+
+                                            {
+                                                this.state.latitude ?
+                                                    `Coordenadas: ${this.state.latitude}.
+                                                                  ${this.state.longitude}.
+                                                                  Data: ${this.state.data}.`
+                                                    :
+                                                    `Clique no botão para saber sua estação climática.`
+                                            }
+
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         )
     }
 }
+
+ReactDOM.render(
+    <App />,
+    document.querySelector("#root")
+)
