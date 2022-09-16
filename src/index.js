@@ -82,7 +82,7 @@ class App extends React.Component {
                                 <div className="d-flex align-items-center border rounded mb-2" style={{ height: "6rem" }}>
                                     <i className={`fas fa-5x ${this.state.icone}`}></i>
                                     <p className="w-75 ms3 text-center fs-1">
-                                        {`${this.state.estacao}`}
+                                        {this.state.estacao}
                                     </p>
                                 </div>
 
@@ -101,6 +101,11 @@ class App extends React.Component {
 
                                         </p>
                                     </div>
+                                    <button 
+                                        onClick={this.obterLocalizacao}
+                                        className="btn btn-outline-primary w-100 mt-2">
+                                        Qual a minha estação?
+                                    </button>
                                 </div>
                             </div>
                         </div>
