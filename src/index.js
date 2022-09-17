@@ -75,7 +75,7 @@ class App extends React.Component {
 
     }
     componentDidMount() {
-        console.log("ComponentDidMount")
+        console.log("ComponentDidMount") 
 
     }
     componentDidUpdate(){
@@ -144,7 +144,7 @@ class App extends React.Component {
         )
     }
 }
-
+{/*Commit alterado*/}
 
 
 
