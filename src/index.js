@@ -12,7 +12,8 @@ class App extends React.Component {
             longitude: null,
             estacao: null,
             data: null,
-            icone: null
+            icone: null,
+            mensagemDeErro: null
 
         }
     }
@@ -46,7 +47,7 @@ class App extends React.Component {
         "Inverno": "fa-snowman"
     }
 
-    obterLocalizacao() {
+    obterLocalizacao = () => {
         window.navigator.geolocation.getCurrentPosition(
             (position) => {
                 let data = new Date()
@@ -64,6 +65,10 @@ class App extends React.Component {
                 )
 
 
+            },
+            (err) => {
+                console.log(err)
+                this.setState({ mensagemDeErro: 'Tente novamente mais tarde.' })
             }
         )
 
@@ -96,12 +101,15 @@ class App extends React.Component {
                                                                   ${this.state.longitude}.
                                                                   Data: ${this.state.data}.`
                                                     :
-                                                    `Clique no botão para saber sua estação climática.`
+                                                    this.state.mensagemDeErro ?
+                                                        `${this.state.mensagemDeErro}`
+                                                        :
+                                                        `Clique no botão para saber sua estação climática.`
                                             }
 
                                         </p>
                                     </div>
-                                    <button 
+                                    <button
                                         onClick={this.obterLocalizacao}
                                         className="btn btn-outline-primary w-100 mt-2">
                                         Qual a minha estação?
