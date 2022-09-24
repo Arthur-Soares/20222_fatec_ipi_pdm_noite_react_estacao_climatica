@@ -1,29 +1,38 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import ReactDOM from 'react-dom'
 import React from 'react'
+import EstacaoClimatica from './EstacaoClimatica'
+import Carregando from './Carregando'
 
 class App extends React.Component {
 
 
-    constructor(props) {
-        super(props)
-        console.log('Construtor')
-        this.state = {
-            latitude: null,
-            longitude: null,
-            estacao: null,
-            data: null,
-            icone: null,
-            mensagemDeErro: null
+    //constructor(props) {
+    //super(props)
+    //console.log('Construtor')
+    //        this.state = {
+    //        latitude: null,
+    //        longitude: null,
+    //        estacao: null,
+    //        data: null,
+    //        icone: null,
+    //       mensagemDeErro: null
+    //       }
+    //}
 
-        }
+    state = {
+
+        latitude: null,
+        longitude: null,
+        estacao: null,
+        data: null,
+        icone: null,
+        mensagemDeErro: null
     }
-
-
     obterEstacao = (data, latitude) => {
         const ano = data.getFullYear();
         const d1 = new Date(ano, 5, 21)
-        const d2 = new Date(ano, 8, 24)
+        const d2 = new Date(ano, 8, 22)
         const d3 = new Date(ano, 11, 22)
         const d4 = new Date(ano, 3, 21)
         const sul = latitude < 0
@@ -42,7 +51,7 @@ class App extends React.Component {
     }
 
     icones = {
-        "Primavera": "fa-seeding", //fa = font awasome
+        "Primavera": "fa-seedling", //fa = font awasome
         "Verao": "fa-umbrella-beach",
         "Outono": "fa-tree",
         "Inverno": "fa-snowman"
@@ -75,14 +84,14 @@ class App extends React.Component {
 
     }
     componentDidMount() {
-        console.log("ComponentDidMount") 
-
+        console.log("ComponentDidMount")
+        this.obterLocalizacao()
     }
-    componentDidUpdate(){
+    componentDidUpdate() {
         console.log("ComponentDidUpdate")
 
     }
-    componentWillUnmount(){
+    componentWillUnmount() {
         console.log("ComponentWillUnmount")
 
     }
@@ -94,59 +103,33 @@ class App extends React.Component {
             <div className="container mt-2">
                 <div className="row justify-content-center">
                     <div className="col-md-8">
-                        {/*.card>.card-body */}
-                        <div className="card">
-                            <div className="card-body">
-                                <div className="d-flex align-items-center border rounded mb-2" style={{ height: "6rem" }}>
-                                    <i className={`fas fa-5x ${this.state.icone}`}></i>
-                                    <p className="w-75 ms3 text-center fs-1">
-                                        {this.state.estacao}
+
+                        {
+                            (!this.state.mensagemDeErro && !this.state.latitude)
+                                ?
+                                <Carregando />
+                                :
+
+                                this.state.mensagemDeErro ?
+                                    <p className="border rounded p-2 fs-1">
+                                        É preciso da permissão para acesso à localização
                                     </p>
-                                </div>
-
-                                <div>
-                                    <div>
-                                        <p className="text-center">
-
-                                            {
-                                                this.state.latitude ?
-                                                    `Coordenadas: ${this.state.latitude}.
-                                                                  ${this.state.longitude}.
-                                                                  Data: ${this.state.data}.`
-                                                    :
-                                                    this.state.mensagemDeErro ?
-                                                        `${this.state.mensagemDeErro}`
-                                                        :
-                                                        `Clique no botão para saber sua estação climática.`
-                                            }
-
-                                        </p>
-                                    </div>
-                                    <button
-                                        onClick={this.obterLocalizacao}
-                                        className="btn btn-outline-primary w-100 mt-2">
-                                        Qual a minha estação?
-                                    </button>
-
-                                    <button 
-                                    className="btn btn-outline-danger w-100 mt-2"
-                                    onClick={() => {
-                                        ReactDOM.unmountComponentAtNode(document.querySelector('#root'))
-                                    }}>                                           
-                                            Perigo!
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+                                    :
+                                    <EstacaoClimatica
+                                        icone={this.state.icone}
+                                        estacao={this.state.estacao}
+                                        longitude={this.state.longitude}
+                                        latitude={this.state.latitude}
+                                        //data={this.state.data}
+                                        //mensagemDeErro={this.state.mensagemDeErro}
+                                        obterLocalizacao={this.obterLocalizacao}
+                                    />}
                     </div>
                 </div>
             </div>
         )
     }
 }
-{/*Commit alterado*/}
-
-
 
 ReactDOM.render(
     <App />,
